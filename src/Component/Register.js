@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Card, Form, Button} from 'react-bootstrap'
+import axios from 'axios'
 
 class Register extends Component{
     constructor(props){
@@ -22,8 +23,21 @@ class Register extends Component{
         this.setState({[event.target.name]: event.target.value});
     }
 
-    handleSubmit(event){
-        alert('A name was submitted: ' + this.state.name);
+    handleSubmit(infomation){
+        let info = {
+            "information": {
+                "fullname": [infomation.name],
+                "age": [infomation.age],
+                "img": "",
+                "dayOfBirth": [infomation.birthday],
+                "phoneNumber": [infomation.phoneNum],
+                "address": [infomation.address]
+            },
+            "username": [infomation.username],
+            "pass": [infomation.password]
+        }
+        let res = axios.post('http://192.168.88.162:3000/admins', info);
+        console.log(res.data);
     }
 
     render() {
@@ -32,7 +46,7 @@ class Register extends Component{
                 <Card.Img src="/images/bookRegis.jpg" style={{ width: '40%', float : "left", height : "520px" }} />
                 <Card.Body style={{ width: '60%', float: "left" }}>
                     <Card.Title>Registration Info</Card.Title>
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.handleSubmit(this.state)}>
 
                         <Form.Group controlId="nameRegis">
                             <Form.Control type="text" placeholder="Name" value={this.state.name} onChange={this.handleChange} name="name"/>
